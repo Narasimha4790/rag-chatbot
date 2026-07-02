@@ -1,0 +1,5 @@
+Retrieval-Augmented Generation (RAG) is a technique for improving the quality of LLM-generated responses by grounding the model on external sources of knowledge.
+It was first introduced by Patrick Lewis and colleagues at Facebook AI Research in 2020.
+The primary advantage of RAG is that it enables LLMs to answer questions about proprietary, private, or real-time data without needing to fine-tune the model parameters, which is computationally expensive.
+A standard RAG pipeline consists of: Ingestion, Chunking, Embedding generation, Vector indexing, Retrieval, Context assembly, and Generation.
+Google Gemini is a family of highly capable multimodal generative AI models that can process text, code, audio, and visual inputs, making it an excellent choice for RAG generation.
