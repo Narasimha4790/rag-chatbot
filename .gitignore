@@ -1,0 +1,17 @@
+# Environments
+.env
+.venv/
+.venv_backend/
+.venv_frontend/
+
+# Python Cache
+**/__pycache__/
+**/*.pyc
+**/*.pyo
+**/*.pyd
+
+# Tests
+.pytest_cache/
+
+# Databases & Persisted Stores
+data/chromadb/

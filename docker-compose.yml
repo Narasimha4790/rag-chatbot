@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  # 1. Vector Database Service (ChromaDB Server)
+  chromadb:
+    image: chromadb/chroma:1.5.9
+    container_name: rag_chromadb
+    ports:
+      - "8001:8000"  # Expose port 8001 on host (mapped to 8000 in container) to avoid conflicts
+    volumes:
+      - chroma-data:/chroma/data
+    environment:
+      - IS_PERSISTENT=TRUE
+      - PERSIST_DIRECTORY=/chroma/data
+      - ANONYMIZED_TELEMETRY=FALSE
+    restart: unless-stopped
+
+  # 2. FastAPI Backend Application Service
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    container_name: rag_backend
+    ports:
+      - "8000:8000"  # Map 8000 on host to 8000 in container
+    environment:
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - CHROMA_HOST=chromadb
+      - CHROMA_PORT=8000
+    depends_on:
+      - chromadb
+    restart: unless-stopped
+
+  # 3. Streamlit Frontend UI Application Service
+  frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    container_name: rag_frontend
+    ports:
+      - "8501:8501"  # Map 8501 on host to 8501 in container
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    restart: unless-stopped
+
+volumes:
+  chroma-data:
+    driver: local
